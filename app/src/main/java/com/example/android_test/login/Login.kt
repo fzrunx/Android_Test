@@ -71,7 +71,7 @@ fun LoginScreen(navController: NavController, modifier: Modifier = Modifier) {
         // 로그인 버튼
         Button(onClick = {
             println("아이디: $userId, 비밀번호: $password") },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
             ) {
             Text(text = "로그인")
         }
