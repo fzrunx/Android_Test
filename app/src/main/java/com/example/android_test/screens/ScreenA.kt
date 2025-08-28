@@ -28,9 +28,9 @@ fun ScreenA(navController: NavController, modifier: Modifier = Modifier, userNam
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("홈 화면", fontSize = 40.sp )
-            Text(userName, fontSize = 40.sp )
-            Spacer(modifier = Modifier.height(30.dp))
+            Text("홈 화면", fontSize = 30.sp )
+            Text(userName, fontSize = 15.sp )
+            Spacer(modifier = Modifier.height(20.dp))
             Image(
                 painter = painterResource(id = R.drawable.sample),
                 contentDescription = "설명 텍스트"

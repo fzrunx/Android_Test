@@ -1,7 +1,5 @@
 package com.example.android_test.login
 
-
-import ads_mobile_sdk.h4
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
