@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.android_test.screens.ScreenA
 import com.example.android_test.screens.ScreenB
+import com.example.android_test.screens.ScreenC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,6 +36,7 @@ fun NavigationApp(modifier: Modifier = Modifier) {
         ) {
             composable("screenA") { ScreenA(navController = navController, userName = "") }
             composable("screenB") { ScreenB(navController = navController) }
+            composable("screenC") { ScreenC(navController = navController) }
             composable("screenA/{userName}") { backStackEntry ->
                 val userName = backStackEntry.arguments?.getString("userName") ?: ""
                 ScreenA(navController = navController, userName = userName)
