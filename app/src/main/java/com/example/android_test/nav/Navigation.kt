@@ -13,9 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.android_test.screens.AddMemoScreen
+import com.example.android_test.screens.Memo
 import com.example.android_test.screens.ScreenA
 import com.example.android_test.screens.ScreenB
 import com.example.android_test.screens.ScreenC
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,12 +31,14 @@ fun NavigationApp(modifier: Modifier = Modifier) {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = "screenA",
+            startDestination = "Memo_Home",
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .systemBarsPadding(),
         ) {
+            composable("Memo_Home") { Memo(navController = navController) }
+            composable("add_memo_screen") { AddMemoScreen(navController = navController) }
             composable("screenA") { ScreenA(navController = navController, userName = "") }
             composable("screenB") { ScreenB(navController = navController) }
             composable("screenC") { ScreenC(navController = navController) }

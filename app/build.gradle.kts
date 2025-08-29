@@ -54,7 +54,8 @@ dependencies {
     implementation(libs.ads.mobile.sdk)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.2") //viewModel
     implementation("androidx.compose.runtime:runtime-livedata:1.8.3") // LiveData
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.2") // StateFlow
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.2")
+    implementation(libs.androidx.foundation.layout) // StateFlow
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

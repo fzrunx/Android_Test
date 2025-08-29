@@ -7,25 +7,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
-class ToDoViewModel: ViewModel() {
-    private val _todo_list = MutableStateFlow<List<String>>(emptyList())
-    val todo_list: StateFlow<List<String>> = _todo_list
+class MemoViewModel: ViewModel() {
+    private val _memo_list = MutableStateFlow<List<String>>(emptyList())
+    val memo_list: StateFlow<List<String>> = _memo_list
     private val _checkedItems = MutableStateFlow<Set<String>>(emptySet())
     val checkedItems: StateFlow<Set<String>> = _checkedItems
 
-
-    fun addList(newToDo: String) {
+    fun addMemoList(newMemo: String) {
         viewModelScope.launch {
-            _todo_list.update { currentList ->
-                currentList + newToDo
+            _memo_list.update { currentList ->
+                currentList + newMemo
             }
         }
     }
-    fun deleteList(deleteToDo: String) {
+
+    fun deleteMemoList(deleteMemo: String) {
         viewModelScope.launch {
-            _todo_list.update { currentList ->
-                currentList - deleteToDo
+            _memo_list.update { currentList ->
+                currentList - deleteMemo
             }
 
         }
