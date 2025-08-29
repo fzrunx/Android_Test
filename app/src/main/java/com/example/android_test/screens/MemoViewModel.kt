@@ -7,34 +7,36 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MemoViewModel: ViewModel() {
-    private val _memo_list = MutableStateFlow<List<String>>(emptyList())
-    val memo_list: StateFlow<List<String>> = _memo_list
-    private val _checkedItems = MutableStateFlow<Set<String>>(emptySet())
-    val checkedItems: StateFlow<Set<String>> = _checkedItems
 
-    fun addMemoList(newMemo: String) {
+
+data class Memo(
+    val title: String,
+    val content: String
+)
+class MemoViewModel: ViewModel() {
+    private val _memo = MutableStateFlow<List<Memo>>(emptyList())
+    val memo: StateFlow<List<Memo>> = _memo
+    private val _checkedItems = MutableStateFlow<Set<Memo>>(emptySet())
+    val checkedItems: StateFlow<Set<Memo>> = _checkedItems
+
+    fun addMemo(title: String, content: String) {
         viewModelScope.launch {
-            _memo_list.update { currentList ->
-                currentList + newMemo
+            _memo.update { currentList ->
+                currentList + Memo(title = title, content = content)
             }
         }
     }
-
-    fun deleteMemoList(deleteMemo: String) {
+    fun deleteMemo(deleteMemo: Memo) {
         viewModelScope.launch {
-            _memo_list.update { currentList ->
+            _memo.update { currentList ->
                 currentList - deleteMemo
             }
-
         }
     }
-    fun toggleCheck(item: String) {
-        _checkedItems.update { currentSet ->
-            if (item in currentSet) {
-                currentSet - item
-            } else {
-                currentSet + item
+    fun updateMemo(index: Int, title: String, content: String) {
+        _memo.value = _memo.value.toMutableList().also {
+            if (index in it.indices) {
+                it[index] = Memo(title, content)
             }
         }
     }

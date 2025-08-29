@@ -25,11 +25,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
+
 @Composable
-fun AddMemoScreen(navController: NavController, modifier: Modifier = Modifier,viewModel: MemoViewModel = viewModel ()) {
-    var title by remember { mutableStateOf("") }
-    var text by remember { mutableStateOf("") }
-    var showDialog by remember { mutableStateOf(false) }
+fun DetailScreen(navController: NavController,modifier: Modifier = Modifier,memoIndex: Int, viewModel: MemoViewModel = viewModel()) {
+    val memo = viewModel.memo.value[memoIndex]
+    var title by remember { mutableStateOf(memo.title) }
+    var text by remember { mutableStateOf(memo.content) }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -38,7 +39,7 @@ fun AddMemoScreen(navController: NavController, modifier: Modifier = Modifier,vi
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "새 메모 작성",
+            "메모 수정",
             fontSize = 20.sp,
             modifier = Modifier
                 .align(Alignment.Start)
@@ -47,9 +48,7 @@ fun AddMemoScreen(navController: NavController, modifier: Modifier = Modifier,vi
         Column() {
             OutlinedTextField(
                 value = title,
-                onValueChange = { if (it.length <= 50) {
-                    title = it }
-                    },
+                onValueChange = { title = it },
                 modifier = modifier
                     .padding(10.dp)
                     .fillMaxWidth(),
@@ -72,32 +71,15 @@ fun AddMemoScreen(navController: NavController, modifier: Modifier = Modifier,vi
             horizontalArrangement = Arrangement.End
         ) {
             Button(onClick = {
-                if (title.isNotBlank() && text.isNotBlank()) { // 제목과 내용이 비어있지 않을 때만 추가
-                    viewModel.addMemo(title, text)
-                    navController.navigate("Memo_Home")
-                }else {
-                    showDialog = true
-                }
+                viewModel.updateMemo(memoIndex, title, text)  // 기존 메모 수정
+                navController.navigate("Memo_Home")
             }) {
-                Text("작성")
+                Text("수정")
             }
         }
-        if (showDialog) {
-            androidx.compose.material3.AlertDialog(
-                onDismissRequest = { showDialog = false },
-                confirmButton = {
-                    Button(onClick = { showDialog = false }) {
-                        Text("확인")
-                    }
-                },
-                title = { Text("입력 오류") },
-                text = { Text("제목과 내용을 입력해주세요.") }
-            )
-        }
+
     }
-
 }
-
 
 
 
@@ -105,7 +87,8 @@ fun AddMemoScreen(navController: NavController, modifier: Modifier = Modifier,vi
 
 @Preview(showBackground = true, showSystemUi = true )
 @Composable
-fun AddMemoPreview() {
+fun DetailMemoPreview() {
     val navController = rememberNavController()
-    AddMemoScreen(navController = navController)
+    val dummyIndex = 0  // 임시로 0번째 메모를 사용
+    DetailScreen(navController = navController, memoIndex = dummyIndex)
 }
