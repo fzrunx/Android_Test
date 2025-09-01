@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -27,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextDecoration
 
 
 @Composable
-fun ToDo (navController: NavController,modifier: Modifier = Modifier, viewModel: ToDoViewModel = viewModel()) {
+fun ToDo (navController: NavController, modifier: Modifier = Modifier, viewModel: ToDoViewModel = viewModel()) {
     var text by remember { mutableStateOf("") }
     val viewModelTodo = viewModel.todo_list.collectAsState()
 
@@ -95,19 +95,19 @@ fun ToDo (navController: NavController,modifier: Modifier = Modifier, viewModel:
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
-                            checked = viewModel.checkedItems.collectAsState().value.contains(item),
+                            checked = item.isDone,
                             onCheckedChange = { viewModel.toggleCheck(item) },
                             modifier = Modifier
                                 .padding(start = 3.dp)
                                 .size(25.dp)
                         )
                         Text(
-                            item,
+                            text = item.title,
                             fontSize = 14.sp,
                             modifier = Modifier
                                 .weight(1f) // ✅ 텍스트가 공간을 차지하도록
                                 .padding(start = 15.dp), // ✅ 체크박스와 텍스트 사이 간격
-                            textDecoration = if (isChecked) TextDecoration.LineThrough else null // ✅ 체크 시 취소선
+                            textDecoration = if (item.isDone) TextDecoration.LineThrough else null // ✅ 체크 시 취소선
                         )
                         IconButton(
                             onClick = { viewModel.deleteList(item) },
@@ -136,8 +136,11 @@ fun ToDo (navController: NavController,modifier: Modifier = Modifier, viewModel:
             horizontalArrangement = Arrangement.End
         ) {
             Button(onClick = {
-                viewModel.addList(text)
-                text = ""
+                if (text.isNotBlank()) {
+                    val newTodo = TodoRoom(title = text) // 입력값을 TodoRoom으로 변환
+                    viewModel.addList(newTodo)           // ViewModel에 전달
+                    text = ""                             // 입력창 초기화
+                }
             }) {
                 Text("+")
             }

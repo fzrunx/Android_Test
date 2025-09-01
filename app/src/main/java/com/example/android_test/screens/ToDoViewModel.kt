@@ -1,5 +1,7 @@
 package com.example.android_test.screens
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,35 +10,37 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-class ToDoViewModel: ViewModel() {
-    private val _todo_list = MutableStateFlow<List<String>>(emptyList())
-    val todo_list: StateFlow<List<String>> = _todo_list
-    private val _checkedItems = MutableStateFlow<Set<String>>(emptySet())
-    val checkedItems: StateFlow<Set<String>> = _checkedItems
 
 
-    fun addList(newToDo: String) {
+
+class ToDoViewModel(application: Application): AndroidViewModel(application) {
+    private val todoDao = TodoDB.getInstance(application).todoDao()
+    private val _todo_list = MutableStateFlow<List<TodoRoom>>(emptyList())
+    val todo_list: StateFlow<List<TodoRoom>> = _todo_list
+    private val _checkedItems = MutableStateFlow<Set<TodoRoom>>(emptySet())
+    val checkedItems: StateFlow<Set<TodoRoom>> = _checkedItems
+
+    init {
         viewModelScope.launch {
-            _todo_list.update { currentList ->
-                currentList + newToDo
+            todoDao.getAllTodos().collect { todos ->
+                _todo_list.value = todos
             }
         }
     }
-    fun deleteList(deleteToDo: String) {
-        viewModelScope.launch {
-            _todo_list.update { currentList ->
-                currentList - deleteToDo
-            }
 
+    fun addList(todo: TodoRoom) {
+        viewModelScope.launch {
+            todoDao.insert(todo)
         }
     }
-    fun toggleCheck(item: String) {
-        _checkedItems.update { currentSet ->
-            if (item in currentSet) {
-                currentSet - item
-            } else {
-                currentSet + item
-            }
+    fun deleteList(todo: TodoRoom) {
+        viewModelScope.launch {
+            todoDao.delete(todo)
+        }
+    }
+    fun toggleCheck(todo: TodoRoom) {
+        viewModelScope.launch {
+            todoDao.update(todo.copy(isDone = !todo.isDone))
         }
     }
 }
