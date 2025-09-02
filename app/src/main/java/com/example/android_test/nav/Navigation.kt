@@ -23,6 +23,10 @@ import com.example.android_test.screens.ScreenB
 import com.example.android_test.screens.ScreenC
 import com.example.android_test.screens.ToDo
 import com.example.android_test.screens.ToDoViewModel
+import com.example.android_test.user.info.UserAdd
+import com.example.android_test.user.info.UserDetail
+import com.example.android_test.user.info.UserList
+import com.example.android_test.user.info.UserViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,6 +35,7 @@ fun NavigationApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val memoViewModel: MemoViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val todoViewModel: ToDoViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    val userViewModel: UserViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 
     // 현재 화면 route 가져오기
     val navBackStackEntry = navController.currentBackStackEntryAsState()
@@ -46,12 +51,18 @@ fun NavigationApp(modifier: Modifier = Modifier) {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = "Todo",
+            startDestination = "user_List",
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .systemBarsPadding(),
         ) {
+            composable ("user_List") { UserList(navController = navController, viewModel = userViewModel) }
+            composable ("user_Add") { UserAdd(navController = navController, viewModel = userViewModel) }
+            composable("detail_User/{userIndex}") { backStackEntry ->
+                val userIndex = backStackEntry.arguments?.getString("userIndex")?.toInt() ?: 0
+                UserDetail(navController = navController, userIndex = userIndex, viewModel = userViewModel)
+            }
             composable("Todo") { ToDo(navController = navController, viewModel = todoViewModel) }
             composable("Memo_Home") { Memo(navController = navController, viewModel = memoViewModel) }
             composable("add_memo_screen") { AddMemoScreen(navController = navController, viewModel = memoViewModel) }
