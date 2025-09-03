@@ -1,4 +1,4 @@
-package com.example.android_test.screens
+package com.example.android_test.todo
 
 import androidx.room.Dao
 import androidx.room.Delete

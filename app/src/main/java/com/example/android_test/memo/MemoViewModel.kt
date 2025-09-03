@@ -1,4 +1,4 @@
-package com.example.android_test.screens
+package com.example.android_test.memo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

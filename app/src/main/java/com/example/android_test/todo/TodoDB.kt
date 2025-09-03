@@ -1,4 +1,4 @@
-package com.example.android_test.screens
+package com.example.android_test.todo
 
 import android.content.Context
 import androidx.room.Database

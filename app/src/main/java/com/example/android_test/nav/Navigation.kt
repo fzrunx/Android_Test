@@ -1,28 +1,26 @@
 package com.example.android_test.nav
 
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.android_test.screens.AddMemoScreen
-import com.example.android_test.screens.DetailScreen
-import com.example.android_test.screens.Memo
-import com.example.android_test.screens.MemoViewModel
+import com.example.android_test.memo.AddMemoScreen
+import com.example.android_test.memo.DetailScreen
+import com.example.android_test.memo.Memo
+import com.example.android_test.memo.MemoViewModel
 import com.example.android_test.screens.ScreenA
 import com.example.android_test.screens.ScreenB
 import com.example.android_test.screens.ScreenC
-import com.example.android_test.screens.ToDo
-import com.example.android_test.screens.ToDoViewModel
+import com.example.android_test.todo.ToDo
+import com.example.android_test.todo.ToDoViewModel
 import com.example.android_test.user.info.UserAdd
 import com.example.android_test.user.info.UserDetail
 import com.example.android_test.user.info.UserList
@@ -46,12 +44,12 @@ fun NavigationApp(modifier: Modifier = Modifier) {
     } ?: true
 
     Scaffold(
-        topBar = { if (showBars) TopAppBar(title = { Text("상단") }) },
-        bottomBar = { if (showBars) BottomAppBar { Text("하단") } }
+        topBar = { if (showBars) TopBar(navController) },
+        bottomBar = { if (showBars) BottomAppBar(navController) }
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = "user_List",
+            startDestination = "screenA",
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

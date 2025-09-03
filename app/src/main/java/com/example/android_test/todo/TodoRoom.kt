@@ -1,4 +1,4 @@
-package com.example.android_test.screens
+package com.example.android_test.todo
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

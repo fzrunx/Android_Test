@@ -1,4 +1,4 @@
-package com.example.android_test.screens
+package com.example.android_test.todo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
