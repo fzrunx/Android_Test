@@ -2,13 +2,13 @@ package com.example.android_test.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CheckboxDefaults.colors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -24,11 +24,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 
 
 @Composable
-fun LoginScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun LoginScreen(navController: NavController, modifier: Modifier = Modifier, viewModel: LoginViewModel = viewModel()) {
     var userId by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     Column(
@@ -65,16 +66,26 @@ fun LoginScreen(navController: NavController, modifier: Modifier = Modifier) {
         )
 
         Spacer(modifier = Modifier.height(25.dp))
-
-        // 로그인 버튼
-        Button(onClick = {
-            println("아이디: $userId, 비밀번호: $password") },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+        Row() {
+            // 로그인 버튼
+            Button(onClick = {
+                println("아이디: $userId, 비밀번호: $password") },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                ) {
+                Text(text = "로그인")
+            }
+            Button(onClick = {navController.navigate("sign_Up")
+                println("회원가입 클릭")}, // 회원가입 로직
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                modifier = Modifier.padding(start = 10.dp)
             ) {
-            Text(text = "로그인")
+                Text(text = "회원가입")
+            }
         }
     }
 }
+
+
 
 
 @Preview(showBackground = true)

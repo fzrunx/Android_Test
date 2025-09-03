@@ -8,14 +8,22 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.android_test.login.LoginScreen
+import com.example.android_test.login.LoginViewModel
+import com.example.android_test.login.SignUp
 import com.example.android_test.memo.AddMemoScreen
 import com.example.android_test.memo.DetailScreen
 import com.example.android_test.memo.Memo
 import com.example.android_test.memo.MemoViewModel
+import com.example.android_test.news.retrofit.NewsScreen
+import com.example.android_test.news.retrofit.NewsViewModel
+import com.example.android_test.retrofit.UserRetrofitScreen
+import com.example.android_test.retrofit.UserRetrofitViewModel
 import com.example.android_test.screens.ScreenA
 import com.example.android_test.screens.ScreenB
 import com.example.android_test.screens.ScreenC
@@ -27,13 +35,18 @@ import com.example.android_test.user.info.UserList
 import com.example.android_test.user.info.UserViewModel
 
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    val memoViewModel: MemoViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-    val todoViewModel: ToDoViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-    val userViewModel: UserViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    val memoViewModel: MemoViewModel = viewModel()
+    val todoViewModel: ToDoViewModel = viewModel()
+    val userViewModel: UserViewModel = viewModel()
+    val loginViewModel: LoginViewModel = viewModel()
+    val userRetrofitViewModel: UserRetrofitViewModel = viewModel()
+    val newsViewModel: NewsViewModel = viewModel()
 
     // 현재 화면 route 가져오기
     val navBackStackEntry = navController.currentBackStackEntryAsState()
@@ -55,6 +68,10 @@ fun NavigationApp(modifier: Modifier = Modifier) {
                 .padding(paddingValues)
                 .systemBarsPadding(),
         ) {
+            composable ("news"){ NewsScreen(viewModel = newsViewModel) }
+            composable ("retrofit"){  UserRetrofitScreen(viewModel = userRetrofitViewModel) }
+            composable ("sign_Up"){ SignUp(navController = navController, viewModel = loginViewModel) }
+            composable ("login") { LoginScreen(navController = navController, viewModel = loginViewModel) }
             composable ("user_List") { UserList(navController = navController, viewModel = userViewModel) }
             composable ("user_Add") { UserAdd(navController = navController, viewModel = userViewModel) }
             composable("detail_User/{userIndex}") { backStackEntry ->

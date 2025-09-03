@@ -69,4 +69,9 @@ dependencies {
     implementation("androidx.room:room-runtime:2.7.2")
     ksp("androidx.room:room-compiler:2.7.2")
     implementation("androidx.room:room-ktx:2.7.2")
+    implementation("androidx.compose.material3:material3:1.2.1")
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+//    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
 }

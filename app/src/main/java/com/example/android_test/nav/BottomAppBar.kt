@@ -40,5 +40,11 @@ fun BottomAppBar(navController: NavController) {
             selected = currentRoute == "user_List",
             onClick = { navController.navigate("user_List") }
         )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
+            label = { Text("로그인") },
+            selected = currentRoute == "login",
+            onClick = { navController.navigate("login") }
+        )
     }
 }
