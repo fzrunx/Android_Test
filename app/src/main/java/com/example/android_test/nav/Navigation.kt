@@ -22,6 +22,7 @@ import com.example.android_test.memo.Memo
 import com.example.android_test.memo.MemoViewModel
 import com.example.android_test.news.retrofit.NewsScreen
 import com.example.android_test.news.retrofit.NewsViewModel
+import com.example.android_test.news.retrofit.NewsWebView
 import com.example.android_test.retrofit.UserRetrofitScreen
 import com.example.android_test.retrofit.UserRetrofitViewModel
 import com.example.android_test.screens.ScreenA
@@ -68,7 +69,11 @@ fun NavigationApp(modifier: Modifier = Modifier) {
                 .padding(paddingValues)
                 .systemBarsPadding(),
         ) {
-            composable ("news"){ NewsScreen(viewModel = newsViewModel) }
+            composable("webview/{url}") { backStackEntry ->
+                val url = backStackEntry.arguments?.getString("url") ?: ""
+                NewsWebView(url = url)
+            }
+            composable ("news"){ NewsScreen(navController = navController, viewModel = newsViewModel)  }
             composable ("retrofit"){  UserRetrofitScreen(viewModel = userRetrofitViewModel) }
             composable ("sign_Up"){ SignUp(navController = navController, viewModel = loginViewModel) }
             composable ("login") { LoginScreen(navController = navController, viewModel = loginViewModel) }

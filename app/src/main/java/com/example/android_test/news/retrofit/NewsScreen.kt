@@ -1,5 +1,7 @@
 package com.example.android_test.news.retrofit
 
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,11 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsScreen(viewModel: NewsViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun NewsScreen(navController: NavController, viewModel: NewsViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val news = viewModel.newsList // ViewModel에서 가져오기
     // 화면 진입 시 한번만 실행
     LaunchedEffect(Unit) {
@@ -43,6 +46,10 @@ fun NewsScreen(viewModel: NewsViewModel = androidx.lifecycle.viewmodel.compose.v
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
+                            .clickable{
+                                val encodedUrl = Uri.encode(item.link) // 특수문자 처리
+                                navController.navigate("webview/$encodedUrl")
+                            }
                     ) {
                         Column(modifier = Modifier.padding(8.dp)) {
                             Text(text = item.title, style = MaterialTheme.typography.bodyMedium)
