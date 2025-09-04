@@ -20,6 +20,11 @@ import com.example.android_test.memo.AddMemoScreen
 import com.example.android_test.memo.DetailScreen
 import com.example.android_test.memo.Memo
 import com.example.android_test.memo.MemoViewModel
+import com.example.android_test.naver.books.NaverBooksScreen
+import com.example.android_test.naver.books.NaverBooksViewModel
+import com.example.android_test.naver.news.NaverBooksWebView
+import com.example.android_test.naver.news.NaverNewsScreen
+import com.example.android_test.naver.news.NaverNewsWebView
 import com.example.android_test.news.retrofit.NewsScreen
 import com.example.android_test.news.retrofit.NewsViewModel
 import com.example.android_test.news.retrofit.NewsWebView
@@ -48,6 +53,7 @@ fun NavigationApp(modifier: Modifier = Modifier) {
     val loginViewModel: LoginViewModel = viewModel()
     val userRetrofitViewModel: UserRetrofitViewModel = viewModel()
     val newsViewModel: NewsViewModel = viewModel()
+    val booksViewModel: NaverBooksViewModel = viewModel()
 
     // 현재 화면 route 가져오기
     val navBackStackEntry = navController.currentBackStackEntryAsState()
@@ -69,6 +75,16 @@ fun NavigationApp(modifier: Modifier = Modifier) {
                 .padding(paddingValues)
                 .systemBarsPadding(),
         ) {
+            composable ("naverbookswebview/{url}"){ backStackEntry ->
+                val url = backStackEntry.arguments?.getString("url") ?: ""
+                NaverBooksWebView(url)
+            }
+            composable ("naverbooks"){ NaverBooksScreen(navController = navController, viewModel = booksViewModel) }
+            composable ("naverwebview/{url}"){ backStackEntry ->
+                val url = backStackEntry.arguments?.getString("url") ?: ""
+                NaverNewsWebView(url)
+            }
+            composable ("navernews"){ NaverNewsScreen(navController = navController) }
             composable("webview/{url}") { backStackEntry ->
                 val url = backStackEntry.arguments?.getString("url") ?: ""
                 NewsWebView(url = url)

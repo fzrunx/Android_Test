@@ -43,13 +43,27 @@ fun TopBar(navController: NavController) {
                 .background(color = Color.Gray)) {
                 Text("retrofit") // 텍스트 버튼 형태
             }
-                IconButton(onClick = {navController.navigate("news")
-                }, modifier = Modifier
-                    .size(60.dp)
-                    .padding(10.dp)
-                    .background(color = Color.Gray)) {
-                    Text("news") // 텍스트 버튼 형태
-                }
+            IconButton(onClick = {navController.navigate("news")
+            }, modifier = Modifier
+                .size(60.dp)
+                .padding(10.dp)
+                .background(color = Color.Gray)) {
+                Text("news") // 텍스트 버튼 형태
+            }
+            IconButton(onClick = {navController.navigate("navernews")
+            }, modifier = Modifier
+                .size(70.dp)
+                .padding(10.dp)
+                .background(color = Color.Gray)) {
+                Text("네이버뉴스") // 텍스트 버튼 형태
+            }
+            IconButton(onClick = {navController.navigate("naverbooks")
+            }, modifier = Modifier
+                .size(70.dp)
+                .padding(10.dp)
+                .background(color = Color.Gray)) {
+                Text("책") // 텍스트 버튼 형태
+            }
         }
     )
 }

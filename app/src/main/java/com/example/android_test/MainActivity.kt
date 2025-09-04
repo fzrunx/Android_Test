@@ -20,18 +20,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-
-@Preview(showBackground = true, showSystemUi = true )
-@Composable
-fun NavPreview() {
-    NavigationApp()
-}
-
-
-@Preview(showBackground = true, showSystemUi = true )
-@Composable
-fun LoginScreenPreview() {
-    val navController = rememberNavController() // 프리뷰용 더미 NavController
-    LoginScreen(navController = navController)
-}
