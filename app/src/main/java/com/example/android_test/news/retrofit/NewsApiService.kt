@@ -7,7 +7,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface NewsApiService {
-    @Headers(    "X-Naver-Client-Id: 1i1G59fuOO9BybJdY8dL",
+    @Headers("X-Naver-Client-Id: 1i1G59fuOO9BybJdY8dL",
         "X-Naver-Client-Secret: nP1aEldLVz"
     )
     @GET("v1/search/news.json")

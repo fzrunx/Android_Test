@@ -2,19 +2,33 @@ package com.example.android_test.news.retrofit
 
 import android.net.Uri
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -23,10 +37,10 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(navController: NavController, viewModel: NewsViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
-    val news = viewModel.newsList // ViewModel에서 가져오기
-    // 화면 진입 시 한번만 실행
+    val news by viewModel.newsList.collectAsState()
+    var searchKeyword by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
-        viewModel.fetchNews()
+        viewModel.loadSavedNews("") // 또는 ViewModel에서 최근 뉴스용 메서드 만들기
     }
     Scaffold(
         topBar = {
@@ -38,26 +52,73 @@ fun NewsScreen(navController: NavController, viewModel: NewsViewModel = androidx
             })
         }
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier.padding(padding)
-        ) {
-            items(news) { item->
+        Column(modifier = Modifier.padding(padding)) {
+            // 검색창
+            OutlinedTextField(
+                value = searchKeyword,
+                onValueChange = { searchKeyword = it },
+                label = { Text("검색어 입력") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+
+            // 검색 버튼
+            Button(
+                onClick = {
+                    if (searchKeyword.isNotBlank()) {
+                        viewModel.fetchNews(searchKeyword)
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+            ) {
+                Text("검색")
+            }
+            LazyColumn(
+                modifier = Modifier.padding(padding)
+            ) {
+                items(news, key = { it.link }) { item ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable{
+                            .clickable {
                                 val encodedUrl = Uri.encode(item.link) // 특수문자 처리
                                 navController.navigate("webview/$encodedUrl")
                             }
                     ) {
                         Column(modifier = Modifier.padding(8.dp)) {
                             Text(text = item.title, style = MaterialTheme.typography.bodyMedium)
-                            Text(text = item.description, style = MaterialTheme.typography.bodySmall)
+                            Text(
+                                text = item.description,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                        // 삭제 버튼을 오른쪽 끝으로 이동
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End // ✅ 오른쪽 끝으로 정렬
+                        ) {
+                            IconButton(
+                                onClick = { viewModel.delete(item) },
+                                modifier = Modifier
+                                    .size(40.dp) // ✅ 버튼 크기 줄이기
+                                    .padding(start = 15.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Delete,
+                                    contentDescription = "삭제",
+                                    modifier = Modifier.size(15.dp)
+
+                                )
+                            }
                         }
                     }
                 }
-            }
 
+            }
         }
     }
+}
